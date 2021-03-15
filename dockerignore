@@ -1,0 +1,28 @@
+*
+
+!src/
+!config/
+!Pipfile
+!Pipfile.lock
+!notebooks/
+!data/
+!output/
+
+# *.env
+# *.dev
+# *.idea/
+# *.DS_Store
+# *pycache*
+# .vscode
+# *.ipynb_checkpoints
+# /test
+# *pylint-shell.sh
+# /htmlcov
+# *.pytest_cache
+# .gitlab-ci.yml
+# *.pytest_cache
+# *.venv
+# __pycache__
+# env_sample
+# pytest.sh
+# testenv
