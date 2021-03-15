@@ -1,34 +1,79 @@
 # ML - Workspace
 
-Overview:
+## Overview
 
-Installation:
+This is a machine learning workspace configured to deploy on GCP AI Notebooks as a custom container. It includes a number of additional packages not included in the standard images for machine learning including visualization packages (seaborn, plotly), ml packages (tslearn), packages needed to access cloud storage (boto3, google-cloud-storage, etc.) and utility packages (pytest). 
 
-This workspace is based on the following pre-built docker image:
-https://hub.docker.com/r/jupyter/tensorflow-notebook. For convenience a number of additional packages have been added, including packages to access data on cloud platforms. To see a list of additional packages included, view the Dockerfile. Because the base image includes a number of large packages used for machine learning, building the image the first time may take a few minutes.
+A full list of the additional packages is listed in the [Dockerfile](./Dockerfile). 
+To add or remove custom packages, simply update the Dockerfile. 
 
-Image size: 4.44GB
+In addition, by updating the base image, you can configure the container to run with any of the GCP [Deep Learning Containers](https://cloud.google.com/ai-platform/deep-learning-containers/docs/choosing-container#choose_a_container_image_type)
+
+Note: This repo contains tutorials and a .git file. When you spin up an AI Notebook, these files do not initially appear. If you fork this repo, you will need to authenticate with your remote git repo first. Once you authenticate, the files will appear on AI Notebook. Yeah, weird. 
+
+## Installation:
+
+### Installing Locally 
+
+#### 1. Installing from Docker image. 
+
+This workspace is based on the following pre-built docker image: [Deep Learning Containers](https://cloud.google.com/ai-platform/deep-learning-containers/docs/choosing-container#choose_a_container_image_type)
+
+Because the base image includes a number of large packages used for machine learning, building the image the first time may take a few minutes.
+
+Image size: 7.37GB
 
 To build the docker container and launch a Jupyter notebook server:
 
 ```
 cd <path_to_working_directory>
 docker build -t ml-workspace:latest ./
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/work ml-workspace:latest
+docker run -d --rm -p 8080:8080 -v $(PWD):/home/jupyter ml-workspace:latest
 ```
 
-The -rm flag in the last command insures the container is removed once it is shutdown. The -p flag manages port forwarding and can be configured for your local environment. The -e flag allows the container to be edited and enables Jupyter Lab. The -v flag mounts the local directory and allows your work to be saved locally even after the container is stopped.
+Flags: 
+- `--rm` - insures the container is removed once it is shutdown. 
+- `-p`  - manages port forwarding between the docker container and the host and can be configured for your local environment 
+- `-d` - runs the container in detached mode  
+- `-v` - CRITICAL - mounts the local directory and allows your work to be saved locally even after the container is stopped. 
 
 You can also run Jupyter Lab from within the container:
+
 ```
 docker exec -it ml-workspace bash
 jupyter lab --ip=0.0.0.0 --port=8080 --allow-root`
 ```
 
-Alternately, you can install most of the typically used packages via pipenv by running:
+#### 2. Installing with `pip install`
+
+Alternately, you can install via the standard pip installation method from the requirements.txt file. 
+
+See: https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
 
 ```
-pip install pipenv
-pipenv install --dev
+pip install -r requirements.txt
+
 ```
-Some packages that require complex installations are not included in the Pipfile, but can be installed by following the commands in the Dockerfiles associated with the image.
+
+### Installing from GCP Container Registry
+
+Finally, this image is available on Google Cloud Platform container registry, here: 
+
+`gcr.io/ml-workspace-99a/ml-workspace`
+
+This container is currently private and only accessible to developers with 99 antennas developers. 
+
+To install the custom container into AI Notebooks from the container registry, first enable Google Cloud Platform Container Registry in your GCP project. See: https://cloud.google.com/ai-platform/notebooks/docs/custom-container
+
+```
+# Tag container
+docker tag ml-workspace:latest gcr.io/ml-workspace-99a/ml-workspace
+# Push container to container registry
+docker push gcr.io/ml-workspace-99a/ml-workspace
+```
+
+To do: 
+- Upload to Docker Hub (public)
+- Add tensorflow tutorial 
+- Add Bayesian inference 
+- Add tslearn 
