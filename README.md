@@ -72,6 +72,9 @@ docker tag ml-workspace:latest gcr.io/ml-workspace-99a/ml-workspace
 docker push gcr.io/ml-workspace-99a/ml-workspace
 ```
 
+### Known Issues 
+- This container does not include ssh server, but ssh is sometimes needed to authenticate to external resources (i.e. Github via ssh). To install an ssh server run: `apt update && apt install  openssh-server` 
+
 To do: 
 - Upload to Docker Hub (public)
 - Add tensorflow tutorial 
