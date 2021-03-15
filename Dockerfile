@@ -48,6 +48,7 @@ RUN conda install --quiet --yes \
 
 RUN conda install -c conda-forge jupyter_contrib_nbextensions
 RUN conda install -c plotly plotly=4.14.3
+RUN apt-get update && apt install openssh-server
 
 WORKDIR /tmp
 RUN git clone https://github.com/PAIR-code/facets.git && \
