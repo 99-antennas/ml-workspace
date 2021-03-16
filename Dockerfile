@@ -55,7 +55,6 @@ RUN git clone https://github.com/PAIR-code/facets.git && \
     rm -rf /tmp/facets
 
 EXPOSE 8080
-CMD ["jupyter", "lab", "--port=8080", "--ip=*", "--allow-root"]
-
+#CMD ["jupyter", "lab", "--port=8080", "--ip=*", "--allow-root"]
 
 
