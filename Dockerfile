@@ -24,16 +24,20 @@ RUN conda install --quiet --yes \
     'cython=0.29.*' \
     'dask=2021.2.*' \
     'dill=0.3.*' \
+    'graphviz=2.47.*' \
     'h5py=3.1.*' \
     'ipywidgets=7.6.*' \
-    'ipympl=0.6.*'\
+    'ipympl=0.6.*' \
+    'jupyter_contrib_nbextensions=0.5.*' \
     'matplotlib-base=3.3.*' \
     'numba=0.52.*' \
     'numexpr=2.7.*' \
     'pandas=1.2.*' \
+    'pandas-gbq=3.1.*' \
     'patsy=0.5.*' \
     'protobuf=3.15.*' \
     'pytables=3.6.*' \
+    'python-graphviz=0.16.*' \
     'scikit-image=0.18.*' \
     'scikit-learn=0.24.*' \
     'scipy=1.6.*' \
@@ -43,10 +47,9 @@ RUN conda install --quiet --yes \
     'tslearn==0.5.0.*' \
     'sympy=1.7.*' \
     'vincent=0.4.*' \
-    'widgetsnbextension=3.5.*'\
+    'widgetsnbextension=3.5.*' \
     'xlrd=2.0.*'
 
-RUN conda install -c conda-forge jupyter_contrib_nbextensions
 RUN conda install -c plotly plotly=4.14.3
 
 WORKDIR /tmp
@@ -54,7 +57,8 @@ RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
     rm -rf /tmp/facets
 
-Work 
+WORKDIR /src
+COPY /src .
 
 EXPOSE 8080
 CMD ["jupyter", "lab", "--port=8080", "--ip=*", "--allow-root"]
