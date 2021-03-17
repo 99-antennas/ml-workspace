@@ -54,7 +54,9 @@ RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
     rm -rf /tmp/facets
 
+Work 
+
 EXPOSE 8080
-#CMD ["jupyter", "lab", "--port=8080", "--ip=*", "--allow-root"]
+CMD ["jupyter", "lab", "--port=8080", "--ip=*", "--allow-root"]
 
 
