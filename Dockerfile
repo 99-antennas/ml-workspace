@@ -12,6 +12,7 @@ RUN pip install --quiet --no-cache-dir \
     'google-cloud-logging==2.2.*' \
     'google-api-python-client==2.0.*' \
     'google-cloud-secret-manager==2.3.*' \
+    'pandas-gbq==0.14.*' \
     'boto3==1.17.*'
 
 # Install ML packages
@@ -33,7 +34,6 @@ RUN conda install --quiet --yes \
     'numba=0.52.*' \
     'numexpr=2.7.*' \
     'pandas=1.2.*' \
-    'pandas-gbq=3.1.*' \
     'patsy=0.5.*' \
     'protobuf=3.15.*' \
     'pytables=3.6.*' \
@@ -51,14 +51,14 @@ RUN conda install --quiet --yes \
     'xlrd=2.0.*'
 
 RUN conda install -c plotly plotly=4.14.3
-
+RUN apt-get update && apt install openssh-server && apt install nano
 WORKDIR /tmp
 RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
     rm -rf /tmp/facets
 
-WORKDIR /src
-COPY /src .
+WORKDIR /home/jupyter
+COPY . .
 
 EXPOSE 8080
 CMD ["jupyter", "lab", "--port=8080", "--ip=*", "--allow-root"]
